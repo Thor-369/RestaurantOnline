@@ -114,11 +114,10 @@ platilloCtrl.administrar = async (req, res) => {
     res.redirect("/administrar");
   } else {
     new Platillo({
-    
-      nombre: nombre,
-      descripcion: descripcion,
-      precio: precio,
-      url: "/uploads/" + req.session.imagen,
+      nombre: req.body.nombre,
+      descripcion: req.body.descripcion,
+      precio: req.body.precio,
+      url: "/uploads/"+  req.session.imagen,
       calificacion: 5,
       estado: true,
     }).save(function (err) {
@@ -143,10 +142,7 @@ platilloCtrl.actualizarPlatillo = async(req, res) => {
     const {nombre, precio, descripcion } = req.body;
     await Platillo.findByIdAndUpdate(req.params.id,{nombre, precio, descripcion,url})
     req.flash('success_msg','Se ha actualizado un platillo')
-    res.redirect('/administrar',{
-      imagenCap:''
-    }
-    );
+    res.redirect('/administrar');
   
 };
 
