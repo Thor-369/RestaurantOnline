@@ -54,6 +54,9 @@ platilloCtrl.buscarPlatillo = async (req, res) => {
   */ 
 platilloCtrl.renderAdministrar = async (req, res) => {
   const platillos = await Platillo.find().lean();
+  console.log("/*/*/*/*//**/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/");
+  console.log(res.locals.error_msg);
+  console.log("/*/*/*/*//**/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/");
   console.log("render adminnistrar =============",req.session.imagen,"la imagen es indefinida?:",(req.session.imagen===undefined));
   res.render("administrarplatillo", {
     title: "Administrar",
@@ -63,7 +66,7 @@ platilloCtrl.renderAdministrar = async (req, res) => {
     descripcion: "",
     buscar: "",
     imagenCap: req.session.imagen,
-    error_msg: req.session.error_msg,
+    error_msg: res.locals.error_msg,
   });
 };
 
@@ -73,8 +76,10 @@ platilloCtrl.administrar = async (req, res) => {
   const existeNombre = await Platillo.findOne({nombre});
   if (existeNombre) {
     console.log("ya existe un platillo con el mismo nombre");
-    req.session.error_msg="ya existe un platillo con el mismo nombre";
-    req.flash("error_msg","El platillo ya existe");
+
+    // res.locals.error_msg="ya existe un platillo con el mismo nombre nombre con la variable local";
+
+    req.flash("error_msg","ya existe un platillo con el mismo nombre flash()");
     res.redirect("/administrar");
   } else {
     new Platillo({
@@ -87,14 +92,16 @@ platilloCtrl.administrar = async (req, res) => {
       estado: true,
     }).save(function (err) {
       //destruyendo session
-      req.session.destroy();
+      // req.session.destroy();
       if (!err) {
         console.log("Platillo agregado con éxito");
+        req.flash('success_msg','El platillo ha sido agragado exitosamente')
         console.log(Platillo);
         // res.send("Platillo agregado ");
         res.redirect("/administrar");
       } else {
         console.log("Ha ocurrido un error ", err);
+        req.flash('error_msg','ya existe un platillo con el mismo nombre flash() 2xdxd hubo un error');
         res.redirect("/administrar");
       }
     });

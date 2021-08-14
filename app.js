@@ -109,6 +109,9 @@ app.use((req, res, next) => {
   // render the error page
   // res.locals.sucess_msg =req.flash("success_msg");
   // res.locals.error_msg = req.flash("error_msg");
+
+  res.locals.sucess_msg = null;
+  res.locals.error_msg = null;
   // res.locals.error = req.flash("error");
   // res.locals.user = req.user || null;
   // next();
