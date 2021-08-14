@@ -69,7 +69,11 @@ app.use(
     next();
   });
 
-//Variables globales
+// Variables globales
+app.use((req,res,next)=>{
+  res.locals.error_msg= req.flash('error_msg');
+  next();
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
