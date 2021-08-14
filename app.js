@@ -107,16 +107,18 @@ app.use((req, res, next) => {
   // res.locals.error_msg= req.flash('error_msg');
 
   // render the error page
-  // res.locals.sucess_msg =req.flash("success_msg");
-  // res.locals.error_msg = req.flash("error_msg");
+  res.locals.sucess_msg =req.flash("success_msg");
+  res.locals.error_msg = req.flash("error_msg");
+  res.locals.imagen = null;
 
-  res.locals.sucess_msg = null;
-  res.locals.error_msg = null;
+  // res.locals.sucess_msg = null;
+  // res.locals.error_msg = null;
   // res.locals.error = req.flash("error");
   // res.locals.user = req.user || null;
   // next();
   res.status(err.status || 500);
   res.render('error');
+  next();
 });
 
 module.exports = app;

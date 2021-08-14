@@ -5,6 +5,7 @@ const { NotExtended } = require("http-errors");
 // const { log } = require("debug");
 // const flash = require('connect-flash');
 const platilloCtrl = Router();
+const {imagen,getNombreImagen} = require("./utilidades.controllers");
 
 /**
   * Función listar platillos
@@ -65,7 +66,7 @@ platilloCtrl.renderAdministrar = async (req, res) => {
     precio: "",
     descripcion: "",
     buscar: "",
-    imagenCap: req.session.imagen,
+    imagenCap: imagen(res),
     error_msg: res.locals.error_msg,
   });
 };
@@ -75,24 +76,29 @@ platilloCtrl.administrar = async (req, res) => {
   const {nombre,descripcion,precio}=req.body;
   const existeNombre = await Platillo.findOne({nombre});
   if (existeNombre) {
-    console.log("ya existe un platillo con el mismo nombre");
+    // console.log("ya existe un platillo con el mismo nombre");
 
     // res.locals.error_msg="ya existe un platillo con el mismo nombre nombre con la variable local";
 
-    req.flash("error_msg","ya existe un platillo con el mismo nombre flash()");
+    req.flash("error_msg","Ya existe un platillo con el mismo nombre");
     res.redirect("/administrar");
+    // destruyendo session
+    res.locals.imagen = null;
+    // req.session.imagen = null;
   } else {
     new Platillo({
     
       nombre: nombre,
       descripcion: descripcion,
       precio: precio,
-      url: "/uploads/" + req.session.imagen,
+      url: "/uploads/" + getNombreImagen(res),
       calificacion: 5,
       estado: true,
     }).save(function (err) {
-      //destruyendo session
-      // req.session.destroy();
+      // destruyendo session
+      res.locals.imagen = null;
+      // req.session.imagen = null;
+
       if (!err) {
         console.log("Platillo agregado con éxito");
         req.flash('success_msg','El platillo ha sido agragado exitosamente')
@@ -101,7 +107,7 @@ platilloCtrl.administrar = async (req, res) => {
         res.redirect("/administrar");
       } else {
         console.log("Ha ocurrido un error ", err);
-        req.flash('error_msg','ya existe un platillo con el mismo nombre flash() 2xdxd hubo un error');
+        req.flash('error_msg','Ha ocurrido un error, contactaté con tu servicio técnico');
         res.redirect("/administrar");
       }
     });
