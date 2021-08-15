@@ -5,7 +5,7 @@ const { NotExtended } = require("http-errors");
 // const { log } = require("debug");
 // const flash = require('connect-flash');
 const platilloCtrl = Router();
-const {imagen,getNombreImagen} = require("./utilidades.controllers");
+const {obtenerImagen,obtenerMensajeSuccess} = require("./utilidades.controllers");
 
 /**
   * Función listar platillos
@@ -15,8 +15,7 @@ platilloCtrl.cargarDatosPlatillo = async (req, res) => {
   const { id, nombre, precio, descripcion } = req.body;
   res.render("administrarplatillo", {
     title: "Administrar",
-    platillos,    
-    id:id,
+    platillos,  
     nombre: nombre,
     precio: precio,
     descripcion: descripcion,
@@ -55,10 +54,16 @@ platilloCtrl.buscarPlatillo = async (req, res) => {
   */ 
 platilloCtrl.renderAdministrar = async (req, res) => {
   const platillos = await Platillo.find().lean();
-  console.log("/*/*/*/*//**/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/");
+
+  console.log("------------------------------------------------------");
+  console.log(res.locals.sucess_msg);
   console.log(res.locals.error_msg);
+  console.log("------------------------------------------------------");
+
   console.log("/*/*/*/*//**/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/");
-  console.log("render adminnistrar =============",req.session.imagen,"la imagen es indefinida?:",(req.session.imagen===undefined));
+  console.log(res.locals.sucess_msg);
+  console.log("/*/*/*/*//**/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/");
+  // console.log("render adminnistrar =============",req.session.imagen,"la imagen es indefinida?:",(req.session.imagen===undefined));
   res.render("administrarplatillo", {
     title: "Administrar",
     platillos,
@@ -66,8 +71,9 @@ platilloCtrl.renderAdministrar = async (req, res) => {
     precio: "",
     descripcion: "",
     buscar: "",
-    imagenCap: imagen(res),
+    imagenCap: obtenerImagen(req),
     error_msg: res.locals.error_msg,
+    success_msg: obtenerMensajeSuccess(req),
   });
 };
 
@@ -81,33 +87,37 @@ platilloCtrl.administrar = async (req, res) => {
     // res.locals.error_msg="ya existe un platillo con el mismo nombre nombre con la variable local";
 
     req.flash("error_msg","Ya existe un platillo con el mismo nombre");
+    // res.locals.imagen = null;
     res.redirect("/administrar");
     // destruyendo session
-    res.locals.imagen = null;
     // req.session.imagen = null;
+    req.session.imagen = '';
+    req.session.success_msg = "";
   } else {
     new Platillo({
     
       nombre: nombre,
       descripcion: descripcion,
       precio: precio,
-      url: "/uploads/" + getNombreImagen(res),
+      url: "/uploads/" + req.session.imagen,
       calificacion: 5,
       estado: true,
     }).save(function (err) {
       // destruyendo session
-      res.locals.imagen = null;
-      // req.session.imagen = null;
+      // res.locals.imagen = null;
+      req.session.imagen = '';
 
       if (!err) {
         console.log("Platillo agregado con éxito");
-        req.flash('success_msg','El platillo ha sido agragado exitosamente')
+        req.flash("sucess_msg","El platillo ha sido agragado exitosamente");
         console.log(Platillo);
+        req.session.success_msg = "El platillo ha sido agregado exitosamente";
         // res.send("Platillo agregado ");
         res.redirect("/administrar");
       } else {
         console.log("Ha ocurrido un error ", err);
-        req.flash('error_msg','Ha ocurrido un error, contactaté con tu servicio técnico');
+        req.session.success_msg = "";
+        req.flash("error_msg","Ha ocurrido un error, contactaté con tu servicio técnico");
         res.redirect("/administrar");
       }
     });

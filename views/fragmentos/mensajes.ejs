@@ -3,4 +3,10 @@
         <%=error_msg%>
         <!-- <div class="my-auto"><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div> -->
       </div>
-<% } %>  
+<% }else{ %>
+<% if(typeof success_msg!=undefined && success_msg.existe) {%>
+  <div class="alert alert-success alert-dismissible fade show d-flex justify-content-between px-3" role="alert">
+      <%=success_msg.mensaje%>
+      <!-- <div class="my-auto"><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div> -->
+    </div>
+<% } }%>  

@@ -107,10 +107,10 @@ app.use((req, res, next) => {
   // res.locals.error_msg= req.flash('error_msg');
 
   // render the error page
-  res.locals.sucess_msg =req.flash("success_msg");
+  res.locals.sucess_msg = req.flash("sucess_msg");
   res.locals.error_msg = req.flash("error_msg");
-  res.locals.imagen = null;
-
+  // res.locals.imagen = [];
+  
   // res.locals.sucess_msg = null;
   // res.locals.error_msg = null;
   // res.locals.error = req.flash("error");

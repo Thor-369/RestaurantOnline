@@ -27,7 +27,8 @@ router.post('/upload', (req, res) => {
         // res.send('Subida exitosa');
     });
     console.log("post upload ///////////////////// ",req.file.filename);
-    res.locals.imagen=req.file.filename;
+    // res.locals.imagen=req.file.filename;
+    req.session.imagen=req.file.filename;
     console.log("post upload ///////////////////// session ",req.session.imagen);
     res.redirect('/administrar');
 });

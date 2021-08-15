@@ -9,6 +9,7 @@ var router = Router();
   * Renderizado vista principal
   */ 
 router.get("/", function (req, res, next) {
+  req.session.success_msg = '';
   res.render("index", {
     title: "Bienvenido a La Place"
   });
