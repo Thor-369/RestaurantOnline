@@ -88,11 +88,11 @@ platilloCtrl.administrar = async (req, res) => {
 
     req.flash("error_msg","Ya existe un platillo con el mismo nombre");
     // res.locals.imagen = null;
+    req.session.imagen = '';
+    req.session.success_msg = "";
     res.redirect("/administrar");
     // destruyendo session
     // req.session.imagen = null;
-    req.session.imagen = '';
-    req.session.success_msg = "";
   } else {
     new Platillo({
     
@@ -108,15 +108,15 @@ platilloCtrl.administrar = async (req, res) => {
       req.session.imagen = '';
 
       if (!err) {
+        req.session.success_msg = "El platillo ha sido agregado exitosamente";
         console.log("Platillo agregado con éxito");
         req.flash("sucess_msg","El platillo ha sido agragado exitosamente");
         console.log(Platillo);
-        req.session.success_msg = "El platillo ha sido agregado exitosamente";
         // res.send("Platillo agregado ");
         res.redirect("/administrar");
       } else {
-        console.log("Ha ocurrido un error ", err);
         req.session.success_msg = "";
+        console.log("Ha ocurrido un error ", err);
         req.flash("error_msg","Ha ocurrido un error, contactaté con tu servicio técnico");
         res.redirect("/administrar");
       }
