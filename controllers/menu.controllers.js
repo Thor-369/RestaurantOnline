@@ -2,6 +2,11 @@ const menuCtrl = {};
 const Platillo = require("../models/platillo");
 const Cart = require("../models/cart");;
 const Pago = require("../models/pagos");
+/**
+ * 
+ * @param {el req del sistema} req el req del sistema
+ * @param {el res del sistema} res el res del sistema
+ */
 menuCtrl.renderMenu = async (req, res) => {
 	try {
 		const platillosDB = await Platillo.find();

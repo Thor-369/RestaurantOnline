@@ -17,11 +17,19 @@ const userSchema = new Schema({
   carrito:  [Array],
 
 });
-
+/**
+ * 
+ * @param {*} password 
+ * @returns retorna la contraseña encriptada
+ */
 userSchema.methods.encryptPassword = (password) => {
   return bcrypt.hashSync(password, bcrypt.genSaltSync(10));
 };
-
+/**
+ * 
+ * @param {*} password 
+ * @returns compara las contraseñas si son correctas
+ */
 userSchema.methods.comparePassword= function (password) {
   return bcrypt.compareSync(password, this.password);
 };

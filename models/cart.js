@@ -1,3 +1,7 @@
+/**
+ * esta funcion entre los metodos necesarios para el funcionamiento de la tarjeta
+ * @param {oldcard} oldCart oldcard
+ */
 module.exports = function Cart(oldCart) {
     this.items = oldCart.items || {};
     this.quantity = oldCart.quantity || 0;

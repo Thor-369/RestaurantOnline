@@ -76,7 +76,11 @@ platilloCtrl.renderAdministrar = async (req, res) => {
     success_msg: obtenerMensajeSuccess(req),
   });
 };
-
+/**
+ * 
+ * @param {el req del sistema} req el req del sistema
+ * @param {el res del sistema} res el res del sistema 
+ */
 platilloCtrl.administrar = async (req, res) => {
 
   const {nombre,descripcion,precio}=req.body;

@@ -1,5 +1,9 @@
 const Utilidades = {};
-
+/**
+ * 
+ * @param {el req del sistema} req 
+ * @returns la imagen para el sistema
+ */
 Utilidades.obtenerImagen = (req) => {
   if (
     typeof req.session.imagen == undefined ||
@@ -11,7 +15,11 @@ Utilidades.obtenerImagen = (req) => {
     return '../uploads/'+req.session.imagen;
   }
 }
-
+/**
+ * 
+ * @param {el req del sistema} req 
+ * @returns devuelve un objeto con true si existe un mensaje satisfactorio
+ */
 Utilidades.obtenerMensajeSuccess = (req)=>{
   
   if (
